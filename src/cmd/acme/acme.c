@@ -962,6 +962,60 @@ Cursor boxcursor = {
 	 0x7F, 0xFE, 0x7F, 0xFE, 0x7F, 0xFE, 0x00, 0x00}
 };
 
+/*
+#include "tomorrowcolors.h"
+#define LCD_DARK  0x99B199FF
+#define LCD_LIGHT 0xC6E6C6FF
+#define LCD_BLACK 0x000000FF
+
+#define OCEAN_DARK 0x2B303BFF
+#define OCEAN_LIGHT 0xC0C5CEFF
+#define OCEAN_HIGH 0x5E7675FF
+
+#define OCEAN_BLUE 0x8FA1B3FF
+#define OCEAN_RED 0xBF616AFF
+#define OCEAN_GREEN 0xA3BE8CFF
+*/
+
+#define PRIMARY_0 0x708FA3FF
+#define PRIMARY_1 0x486F88FF
+#define PRIMARY_2 0x29526DFF
+#define PRIMARY_3 0x123852FF
+#define PRIMARY_4 0x032236FF
+
+#define SECONDARY_A_0 0xFFE9AAFF
+#define SECONDARY_A_1 0xD4B96AFF
+#define SECONDARY_A_2 0xAA8C39FF
+#define SECONDARY_A_3 0x806415FF
+#define SECONDARY_A_4 0x553F00FF
+
+#define SECONDARY_B_0 0xFFC0AAFF
+#define SECONDARY_B_1 0xD4856AFF
+#define SECONDARY_B_2 0xAA5639FF
+#define SECONDARY_B_3 0x803015FF
+#define SECONDARY_B_4 0x551600FF
+
+#define PRIMARY_RED 0xAA3F39FF
+#define PRIMARY_GREEN 0x799E35FF
+
+#define TAGCOLS_BACK SECONDARY_A_4
+#define TAGCOLS_HIGH SECONDARY_A_2
+#define TAGCOLS_BORD SECONDARY_A_3
+#define TAGCOLS_TEXT SECONDARY_A_0
+#define TAGCOLS_HTEXT SECONDARY_A_0
+
+#define TEXTCOLS_BACK PRIMARY_4
+#define TEXTCOLS_HIGH PRIMARY_2
+#define TEXTCOLS_BORD PRIMARY_2
+#define TEXTCOLS_TEXT PRIMARY_0
+#define TEXTCOLS_HTEXT PRIMARY_0
+
+#define COL_BUTTON SECONDARY_A_3
+#define BUF_MODIFIED_BUTTON SECONDARY_A_1
+
+#define BUT_2_COL PRIMARY_RED
+#define BUT_3_COL PRIMARY_GREEN
+
 void
 iconinit(void)
 {
@@ -970,20 +1024,20 @@ iconinit(void)
 
 	if(tagcols[BACK] == nil) {
 		/* Blue */
-		tagcols[BACK] = allocimagemix(display, DPalebluegreen, DWhite);
-		tagcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPalegreygreen);
-		tagcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DPurpleblue);
-		tagcols[TEXT] = display->black;
-		tagcols[HTEXT] = display->black;
-	
+		tagcols[BACK] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TAGCOLS_BACK);
+		tagcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TAGCOLS_HIGH);
+		tagcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TAGCOLS_BORD);
+		tagcols[TEXT] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TAGCOLS_TEXT);
+		tagcols[HTEXT] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TAGCOLS_HTEXT);
+
 		/* Yellow */
-		textcols[BACK] = allocimagemix(display, DPaleyellow, DWhite);
-		textcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DDarkyellow);
-		textcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DYellowgreen);
-		textcols[TEXT] = display->black;
-		textcols[HTEXT] = display->black;
+		textcols[BACK] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TEXTCOLS_BACK);
+		textcols[HIGH] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TEXTCOLS_HIGH);
+		textcols[BORD] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TEXTCOLS_BORD);
+		textcols[TEXT] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TEXTCOLS_TEXT);
+		textcols[HTEXT] = allocimage(display, Rect(0,0,1,1), screen->chan, 1, TEXTCOLS_HTEXT);
 	}
-	
+
 	r = Rect(0, 0, Scrollwid+ButtonBorder, font->height+1);
 	if(button && eqrect(r, button->r))
 		return;
@@ -1005,15 +1059,15 @@ iconinit(void)
 	r.max.x -= ButtonBorder;
 	border(modbutton, r, ButtonBorder, tagcols[BORD], ZP);
 	r = insetrect(r, ButtonBorder);
-	tmp = allocimage(display, Rect(0,0,1,1), screen->chan, 1, DMedblue);
+	tmp = allocimage(display, Rect(0,0,1,1), screen->chan, 1, BUF_MODIFIED_BUTTON);
 	draw(modbutton, r, tmp, nil, ZP);
 	freeimage(tmp);
 
 	r = button->r;
-	colbutton = allocimage(display, r, screen->chan, 0, DPurpleblue);
+	colbutton = allocimage(display, r, screen->chan, 0, COL_BUTTON);
 
-	but2col = allocimage(display, r, screen->chan, 1, 0xAA0000FF);
-	but3col = allocimage(display, r, screen->chan, 1, 0x006600FF);
+	but2col = allocimage(display, r, screen->chan, 1, BUT_2_COL);
+	but3col = allocimage(display, r, screen->chan, 1, BUT_3_COL);
 }
 
 /*
